@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Alias="Self" Namespace="MovieBookingSystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012">
+  <EntityType Name="cart">
+    <Key>
+      <PropertyRef Name="cartCode" />
+    </Key>
+    <Property Name="cartCode" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="NoTicket" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="cinema">
+    <Key>
+      <PropertyRef Name="cinemaID" />
+    </Key>
+    <Property Name="cinemaID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="cinemaName" Nullable="false" MaxLength="20" Type="nchar" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MovieBookingSystem.dbo.cinema_movie' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="cinema_movie">
+    <Key>
+      <PropertyRef Name="movieID" />
+      <PropertyRef Name="cinemaID" />
+    </Key>
+    <Property Name="movieID" Nullable="false" Type="int" />
+    <Property Name="cinemaID" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="movie">
+    <Key>
+      <PropertyRef Name="movieID" />
+    </Key>
+    <Property Name="movieID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="movieName" Nullable="false" MaxLength="20" Type="nchar" />
+    <Property Name="movieTime" Nullable="false" Precision="7" Type="time" />
+    <Property Name="movieDate" Nullable="false" Type="date" />
+    <Property Name="movieType" Nullable="false" MaxLength="20" Type="nchar" />
+    <Property Name="availableSeat" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="ticket">
+    <Key>
+      <PropertyRef Name="ticketID" />
+    </Key>
+    <Property Name="ticketID" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="ticketType" Nullable="false" MaxLength="10" Type="nchar" />
+    <Property Name="movieID" Nullable="false" Type="int" />
+    <Property Name="seatNumber" Nullable="false" Type="int" />
+  </EntityType>
+  <EntityType Name="user_">
+    <Key>
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="firstName" Nullable="false" MaxLength="10" Type="nchar" />
+    <Property Name="lastName" Nullable="false" MaxLength="10" Type="nchar" />
+    <Property Name="email" Nullable="false" MaxLength="30" Type="nchar" />
+    <Property Name="password" Nullable="false" MaxLength="8" Type="nchar" />
+    <Property Name="id" Nullable="false" StoreGeneratedPattern="Identity" Type="int" />
+    <Property Name="cartCode" Type="int" />
+    <Property Name="type" Nullable="false" MaxLength="10" Type="nchar" />
+  </EntityType>
+  <Association Name="FK_cinema_movie_cinema">
+    <End Type="Self.cinema" Multiplicity="1" Role="cinema" />
+    <End Type="Self.cinema_movie" Multiplicity="*" Role="cinema_movie" />
+    <ReferentialConstraint>
+      <Principal Role="cinema">
+        <PropertyRef Name="cinemaID" />
+      </Principal>
+      <Dependent Role="cinema_movie">
+        <PropertyRef Name="cinemaID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_cinema_movie_movie">
+    <End Type="Self.movie" Multiplicity="1" Role="movie" />
+    <End Type="Self.cinema_movie" Multiplicity="*" Role="cinema_movie" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="movieID" />
+      </Principal>
+      <Dependent Role="cinema_movie">
+        <PropertyRef Name="movieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ticket_movie">
+    <End Type="Self.movie" Multiplicity="1" Role="movie" />
+    <End Type="Self.ticket" Multiplicity="*" Role="ticket" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="movieID" />
+      </Principal>
+      <Dependent Role="ticket">
+        <PropertyRef Name="movieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_user__cart">
+    <End Type="Self.cart" Multiplicity="0..1" Role="cart" />
+    <End Type="Self.user_" Multiplicity="*" Role="user_" />
+    <ReferentialConstraint>
+      <Principal Role="cart">
+        <PropertyRef Name="cartCode" />
+      </Principal>
+      <Dependent Role="user_">
+        <PropertyRef Name="cartCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MovieBookingSystemModelStoreContainer">
+    <EntitySet Name="cart" EntityType="Self.cart" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cinema" EntityType="Self.cinema" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="movie" EntityType="Self.movie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ticket" EntityType="Self.ticket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_" EntityType="Self.user_" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cinema_movie" EntityType="Self.cinema_movie" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [cinema_movie].[movieID] AS [movieID], 
+    [cinema_movie].[cinemaID] AS [cinemaID]
+    FROM [dbo].[cinema_movie] AS [cinema_movie]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_cinema_movie_cinema" Association="Self.FK_cinema_movie_cinema">
+      <End EntitySet="cinema" Role="cinema" />
+      <End EntitySet="cinema_movie" Role="cinema_movie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_cinema_movie_movie" Association="Self.FK_cinema_movie_movie">
+      <End EntitySet="movie" Role="movie" />
+      <End EntitySet="cinema_movie" Role="cinema_movie" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ticket_movie" Association="Self.FK_ticket_movie">
+      <End EntitySet="movie" Role="movie" />
+      <End EntitySet="ticket" Role="ticket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_user__cart" Association="Self.FK_user__cart">
+      <End EntitySet="cart" Role="cart" />
+      <End EntitySet="user_" Role="user_" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

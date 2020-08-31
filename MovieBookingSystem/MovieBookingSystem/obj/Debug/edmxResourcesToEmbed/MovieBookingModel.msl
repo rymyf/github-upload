@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MovieBookingSystemModelStoreContainer" CdmEntityContainer="MovieBookingSystemEntities">
+    <EntitySetMapping Name="cart">
+      <EntityTypeMapping TypeName="MovieBookingSystemModel.cart">
+        <MappingFragment StoreEntitySet="cart">
+          <ScalarProperty Name="cartCode" ColumnName="cartCode" />
+          <ScalarProperty Name="NoTicket" ColumnName="NoTicket" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cinema">
+      <EntityTypeMapping TypeName="MovieBookingSystemModel.cinema">
+        <MappingFragment StoreEntitySet="cinema">
+          <ScalarProperty Name="cinemaID" ColumnName="cinemaID" />
+          <ScalarProperty Name="cinemaName" ColumnName="cinemaName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="movie">
+      <EntityTypeMapping TypeName="MovieBookingSystemModel.movie">
+        <MappingFragment StoreEntitySet="movie">
+          <ScalarProperty Name="movieID" ColumnName="movieID" />
+          <ScalarProperty Name="movieName" ColumnName="movieName" />
+          <ScalarProperty Name="movieTime" ColumnName="movieTime" />
+          <ScalarProperty Name="movieDate" ColumnName="movieDate" />
+          <ScalarProperty Name="movieType" ColumnName="movieType" />
+          <ScalarProperty Name="availableSeat" ColumnName="availableSeat" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ticket">
+      <EntityTypeMapping TypeName="IsTypeOf(MovieBookingSystemModel.ticket)">
+        <MappingFragment StoreEntitySet="ticket">
+          <ScalarProperty Name="ticketID" ColumnName="ticketID" />
+          <ScalarProperty Name="seatNumber" ColumnName="seatNumber" />
+          <ScalarProperty Name="movieID" ColumnName="movieID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="user_">
+      <EntityTypeMapping TypeName="IsTypeOf(MovieBookingSystemModel.user_)">
+        <MappingFragment StoreEntitySet="user_">
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="cartCode" ColumnName="cartCode" />
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="lastName" ColumnName="lastName" />
+          <ScalarProperty Name="firstName" ColumnName="firstName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="cinema_movie" TypeName="MovieBookingSystemModel.cinema_movie" StoreEntitySet="cinema_movie">
+      <EndProperty Name="cinema">
+        <ScalarProperty Name="cinemaID" ColumnName="cinemaID" />
+      </EndProperty>
+      <EndProperty Name="movie">
+        <ScalarProperty Name="movieID" ColumnName="movieID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

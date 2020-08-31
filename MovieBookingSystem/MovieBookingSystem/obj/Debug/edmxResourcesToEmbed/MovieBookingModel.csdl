@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MovieBookingSystemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="cart">
+    <Key>
+      <PropertyRef Name="cartCode" />
+    </Key>
+    <Property Name="cartCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NoTicket" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="user_" Relationship="Self.FK_user__cart" FromRole="cart" ToRole="user_" />
+    <NavigationProperty Name="ticket" Relationship="MovieBookingSystemModel.cartticket" FromRole="cart" ToRole="ticket" />
+  </EntityType>
+  <EntityType Name="cinema">
+    <Key>
+      <PropertyRef Name="cinemaID" />
+    </Key>
+    <Property Name="cinemaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cinemaName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="movie" Relationship="Self.cinema_movie" FromRole="cinema" ToRole="movie" />
+  </EntityType>
+  <EntityType Name="movie">
+    <Key>
+      <PropertyRef Name="movieID" />
+    </Key>
+    <Property Name="movieID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="movieName" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="movieTime" Type="Time" Nullable="false" Precision="7" />
+    <Property Name="movieDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="movieType" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="availableSeat" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ticket" Relationship="Self.FK_ticket_movie" FromRole="movie" ToRole="ticket" />
+    <NavigationProperty Name="cinema" Relationship="Self.cinema_movie" FromRole="movie" ToRole="cinema" />
+  </EntityType>
+  <EntityType Name="ticket">
+    <Key>
+      <PropertyRef Name="ticketID" />
+    </Key>
+    <Property Name="ticketID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="movieID" Type="Int32" Nullable="false" />
+    <Property Name="seatNumber" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="movie" Relationship="Self.FK_ticket_movie" FromRole="ticket" ToRole="movie" />
+    <NavigationProperty Name="cart" Relationship="MovieBookingSystemModel.cartticket" FromRole="ticket" ToRole="cart" />
+  </EntityType>
+  <EntityType Name="user_">
+    <Key>
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="firstName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="lastName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="cartCode" Type="Int32" />
+    <NavigationProperty Name="cart" Relationship="Self.FK_user__cart" FromRole="user_" ToRole="cart" />
+  </EntityType>
+  <Association Name="FK_user__cart">
+    <End Role="cart" Type="Self.cart" Multiplicity="0..1" />
+    <End Role="user_" Type="Self.user_" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cart">
+        <PropertyRef Name="cartCode" />
+      </Principal>
+      <Dependent Role="user_">
+        <PropertyRef Name="cartCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ticket_movie">
+    <End Role="movie" Type="Self.movie" Multiplicity="1" />
+    <End Role="ticket" Type="Self.ticket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="movie">
+        <PropertyRef Name="movieID" />
+      </Principal>
+      <Dependent Role="ticket">
+        <PropertyRef Name="movieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="cinema_movie">
+    <End Role="cinema" Type="Self.cinema" Multiplicity="*" />
+    <End Role="movie" Type="Self.movie" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="MovieBookingSystemEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="cart" EntityType="Self.cart" />
+    <EntitySet Name="cinema" EntityType="Self.cinema" />
+    <EntitySet Name="movie" EntityType="Self.movie" />
+    <EntitySet Name="ticket" EntityType="Self.ticket" />
+    <EntitySet Name="user_" EntityType="Self.user_" />
+    <AssociationSet Name="FK_user__cart" Association="Self.FK_user__cart">
+      <End Role="cart" EntitySet="cart" />
+      <End Role="user_" EntitySet="user_" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ticket_movie" Association="Self.FK_ticket_movie">
+      <End Role="movie" EntitySet="movie" />
+      <End Role="ticket" EntitySet="ticket" />
+    </AssociationSet>
+    <AssociationSet Name="cinema_movie" Association="Self.cinema_movie">
+      <End Role="cinema" EntitySet="cinema" />
+      <End Role="movie" EntitySet="movie" />
+    </AssociationSet>
+    <AssociationSet Name="cartticket" Association="MovieBookingSystemModel.cartticket">
+      <End Role="cart" EntitySet="cart" />
+      <End Role="ticket" EntitySet="ticket" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="cartticket">
+    <End Type="MovieBookingSystemModel.cart" Role="cart" Multiplicity="1" />
+    <End Type="MovieBookingSystemModel.ticket" Role="ticket" Multiplicity="*" />
+  </Association>
+  <EntityType Name="Admin" BaseType="MovieBookingSystemModel.user_">
+    <Property Name="admin" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" DefaultValue="" />
+  </EntityType>
+  <EntityType Name="Customer" BaseType="MovieBookingSystemModel.user_">
+    <Property Name="type1" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" DefaultValue="" />
+  </EntityType>
+  <EntityType Name="ticketForAdult" BaseType="MovieBookingSystemModel.ticket">
+    <Property Name="adult" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ticketForKid" BaseType="MovieBookingSystemModel.ticket">
+    <Property Name="kid" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+  </EntityType>
+</Schema>

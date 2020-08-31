@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9127530959334b448b32991f30d8e5b3" Name="Diagram1" ZoomLevel="65">
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.cart" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.cinema" Width="1.5" PointX="1.5" PointY="10.375" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.movie" Width="1.5" PointX="0.75" PointY="0.5" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.ticket" Width="1.5" PointX="3" PointY="2.875" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.user_" Width="1.5" PointX="3" PointY="6.875" />
+        <AssociationConnector Association="MovieBookingSystemModel1.FK_ticket_cart" />
+        <AssociationConnector Association="MovieBookingSystemModel1.FK_user__cart" />
+        <AssociationConnector Association="MovieBookingSystemModel1.FK_ticket_movie" />
+        <AssociationConnector Association="MovieBookingSystemModel1.cinema_movie" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.Customer" Width="1.5" PointX="4" PointY="10" />
+        <InheritanceConnector EntityType="MovieBookingSystemModel1.Customer" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.Admin" Width="1.5" PointX="8" PointY="10" />
+        <InheritanceConnector EntityType="MovieBookingSystemModel1.Admin" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.ForAdult" Width="1.5" PointX="6.5" PointY="2.125" />
+        <InheritanceConnector EntityType="MovieBookingSystemModel1.ForAdult" />
+        <EntityTypeShape EntityType="MovieBookingSystemModel1.ForKid" Width="1.5" PointX="7.5" PointY="4.875" />
+        <InheritanceConnector EntityType="MovieBookingSystemModel1.ForKid" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
